@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Vulnerable App{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>👤 Welcome, {{ session.username }}!</h2>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+        <div>
+            <strong>User ID:</strong> {{ session.user_id }}
+        </div>
+        <div>
+            <strong>Role:</strong> {{ session.role }}
+        </div>
+        <div>
+            <strong>Credit Card:</strong> {{ session.credit_card }}
+            <span class="vulnerability-tag" style="background: #ff6b6b;">SENSITIVE DATA EXPOSURE</span>
+        </div>
+    </div>
+    
+    <div class="hint" style="margin-top: 1rem;">
+        <strong>⚠️ Vulnerability:</strong> Credit card number is stored in the session and exposed in the dashboard. Check browser cookies - sensitive data is also stored there without encryption.
+    </div>
+    
+    <a href="/logout" class="btn" style="margin-top: 1rem;">Logout</a>
+</div>
+
+<div class="card">
+    <h2>🔒 Your Account Actions</h2>
+    <p>Actions below have no CSRF protection:</p>
+    
+    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+        <a href="/csrf" class="btn">Change Settings</a>
+        <a href="/user/{{ session.user_id }}" class="btn">View Profile (IDOR)</a>
+    </div>
+</div>
+
+<div class="card">
+    <h2>📊 Session Data (Debug)</h2>
+    <div class="result">
+        <pre>{{ session | tojson(indent=2) }}</pre>
+    </div>
+    <span class="vulnerability-tag">INFORMATION DISCLOSURE</span>
+</div>
+{% endblock %}

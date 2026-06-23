@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Vulnerable App{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 400px; margin: 0 auto;">
+    <h2>🔐 Login</h2>
+    <span class="vulnerability-tag">SQL INJECTION</span>
+    <span class="vulnerability-tag">WEAK SESSION</span>
+    
+    <form method="POST" style="margin-top: 1rem;">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Username">
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Password">
+        
+        <button type="submit">Login</button>
+    </form>
+    
+    {% if error %}
+    <div class="error" style="margin-top: 1rem;">
+        {{ error }}
+    </div>
+    {% endif %}
+    
+    <div class="hint" style="margin-top: 1rem;">
+        <strong>💡 Vulnerabilities:</strong>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+            <li>SQL Injection: <code>admin'--</code></li>
+            <li>Default credentials: <code>admin/admin123</code></li>
+            <li>Insecure cookies (no HttpOnly, Secure)</li>
+            <li>Weak session token (MD5 hash)</li>
+            <li>Credit card stored in session</li>
+        </ul>
+    </div>
+    
+    <p style="margin-top: 1rem;">
+        Don't have an account? <a href="/register">Register here</a>
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Vulnerable App{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 500px; margin: 0 auto;">
+    <h2>📋 User Registration</h2>
+    <span class="vulnerability-tag">MASS ASSIGNMENT</span>
+    <span class="vulnerability-tag">SQL INJECTION</span>
+    
+    <form method="POST" style="margin-top: 1rem;">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Choose a username">
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="your@email.com">
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Choose a password">
+        
+        <!-- Hidden field that can be manipulated -->
+        <input type="hidden" name="role" value="user">
+        
+        <button type="submit">Register</button>
+    </form>
+    
+    {% if message %}
+    <div class="success" style="margin-top: 1rem;">
+        {{ message }}
+    </div>
+    {% endif %}
+    
+    <div class="hint">
+        <strong>💡 Mass Assignment Vulnerability:</strong>
+        <p>Add <code>role=admin</code> to the form data to register as admin!</p>
+        <pre>
+# Using curl:
+curl -X POST http://localhost:5000/register \
+  -d "username=hacker&password=hack123&email=h@h.com&role=admin"
+
+# Or modify the hidden field in browser DevTools
+        </pre>
+    </div>
+    
+    <div class="hint">
+        <strong>💡 SQL Injection in Registration:</strong>
+        <pre>
+Username: admin','admin@evil.com','admin'); DROP TABLE users;--
+        </pre>
+    </div>
+    
+    <p style="margin-top: 1rem;">
+        Already have an account? <a href="/login">Login here</a>
+    </p>
+</div>
+{% endblock %}

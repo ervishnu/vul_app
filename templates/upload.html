@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}File Upload - Vulnerable App{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>📤 Insecure File Upload</h2>
+    <span class="vulnerability-tag">HIGH</span>
+    <span class="vulnerability-tag">CWE-434</span>
+    
+    <p>Upload any file. There's no validation on file type, size, or content.</p>
+    
+    <form method="POST" enctype="multipart/form-data" style="margin-top: 1rem;">
+        <label for="file">Select File:</label>
+        <input type="file" id="file" name="file">
+        <button type="submit">Upload</button>
+    </form>
+    
+    {% if message %}
+    <div class="success" style="margin-top: 1rem;">
+        {{ message }}
+    </div>
+    {% endif %}
+    
+    <div class="hint">
+        <strong>💡 Vulnerabilities:</strong>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+            <li>No file type validation</li>
+            <li>No file size limit</li>
+            <li>Original filename is preserved (path traversal possible)</li>
+            <li>Files are saved to web-accessible directory</li>
+            <li>Executable files can be uploaded</li>
+        </ul>
+    </div>
+    
+    <div class="hint">
+        <strong>💡 Attack Scenarios:</strong>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+            <li>Upload a PHP/Python web shell</li>
+            <li>Upload malware disguised as images</li>
+            <li>Path traversal: <code>../../../etc/cron.d/malicious</code></li>
+            <li>Overwrite existing files</li>
+            <li>Upload HTML files for stored XSS</li>
+        </ul>
+    </div>
+    
+    <div class="card" style="margin-top: 1rem; background: rgba(0,0,0,0.3);">
+        <h3>Example Web Shell (PHP)</h3>
+        <pre>&lt;?php system($_GET['cmd']); ?&gt;</pre>
+        
+        <h3>Example Web Shell (Python Flask)</h3>
+        <pre>
+# shell.py - If this gets imported/executed
+import os
+print(os.popen('whoami').read())
+        </pre>
+    </div>
+</div>
+{% endblock %}

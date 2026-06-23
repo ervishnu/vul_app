@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Panel - Vulnerable App{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>👑 Admin Panel</h2>
+    <span class="vulnerability-tag">BROKEN ACCESS CONTROL</span>
+    <span class="vulnerability-tag">CWE-284</span>
+    
+    <div class="hint">
+        <strong>⚠️ Vulnerability:</strong> This admin panel can be accessed by anyone. There's no server-side authorization check!
+    </div>
+    
+    <h3 style="margin-top: 1rem;">User Management</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>admin</td>
+                <td>admin@vulnerable.com</td>
+                <td>admin</td>
+                <td>
+                    <button onclick="deleteUser(1)">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>john</td>
+                <td>john@example.com</td>
+                <td>user</td>
+                <td>
+                    <button onclick="deleteUser(2)">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>jane</td>
+                <td>jane@example.com</td>
+                <td>user</td>
+                <td>
+                    <button onclick="deleteUser(3)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="card">
+    <h3>🔧 Admin Actions</h3>
+    <p>These admin actions have no authorization checks:</p>
+    
+    <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+        <a href="/debug" class="btn">View Debug Info</a>
+        <a href="/user/1" class="btn">View Admin User</a>
+        <a href="/user/2" class="btn">View User 2</a>
+        <a href="/user/3" class="btn">View User 3</a>
+    </div>
+</div>
+
+<div class="card">
+    <h3>📜 System Logs</h3>
+    <p>Attempt to read system files using LFI:</p>
+    
+    <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+        <a href="/lfi?file=/var/log/syslog" class="btn">System Log</a>
+        <a href="/lfi?file=/etc/passwd" class="btn">Passwd File</a>
+        <a href="/lfi?file=app.py" class="btn">App Source</a>
+    </div>
+</div>
+
+<script>
+    function deleteUser(userId) {
+        // VULNERABILITY: No CSRF token, no confirmation
+        fetch('/admin/delete-user/' + userId, {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('User ' + userId + ' deleted!');
+            location.reload();
+        });
+    }
+</script>
+{% endblock %}

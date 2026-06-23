@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Weak Crypto - Vulnerable App{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>🔑 Weak Cryptography</h2>
+    <span class="vulnerability-tag">MEDIUM</span>
+    <span class="vulnerability-tag">CWE-327</span>
+    
+    <p>Demonstrates insecure cryptographic practices.</p>
+    
+    <form method="POST" style="margin-top: 1rem;">
+        <label for="data">Data:</label>
+        <input type="text" id="data" name="data" placeholder="Enter data to hash/encode">
+        
+        <label for="action">Action:</label>
+        <select id="action" name="action">
+            <option value="hash">MD5 Hash (Insecure)</option>
+            <option value="encode">Base64 Encode (Not Encryption!)</option>
+        </select>
+        
+        <button type="submit">Process</button>
+    </form>
+    
+    {% if result %}
+    <div class="result">
+        <h3>Result:</h3>
+        <pre>{{ result }}</pre>
+    </div>
+    {% endif %}
+    
+    <div class="hint">
+        <strong>💡 Cryptographic Weaknesses:</strong>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+            <li><strong>MD5:</strong> Broken, susceptible to collision attacks</li>
+            <li><strong>SHA1:</strong> Deprecated for security purposes</li>
+            <li><strong>Base64:</strong> Encoding, NOT encryption</li>
+            <li><strong>No salt:</strong> Passwords hashed without salt</li>
+            <li><strong>ECB mode:</strong> Insecure block cipher mode</li>
+        </ul>
+    </div>
+</div>
+
+<div class="card">
+    <h3>🔓 Hardcoded Encryption Keys</h3>
+    <p>The application uses hardcoded keys:</p>
+    <pre>
+SECRET_KEY = "super_secret_key_123"
+ENCRYPTION_KEY = "1234567890abcdef"
+API_KEY = "sk_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    </pre>
+    <span class="vulnerability-tag">CWE-798</span>
+</div>
+{% endblock %}

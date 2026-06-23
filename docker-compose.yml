@@ -1,0 +1,50 @@
+# Vulnerable Web Application - Docker Compose
+# WARNING: For security testing only!
+
+version: '3.8'
+
+services:
+  vulnerable-app:
+    build: .
+    container_name: vulnerable-app
+    ports:
+      - "5000:5000"
+    environment:
+      # VULNERABILITY: Hardcoded credentials in environment
+      - DATABASE_URL=sqlite:///vulnerable.db
+      - SECRET_KEY=super_secret_key_123
+      - ADMIN_PASSWORD=admin123
+      - AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+      - AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+      - GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      - STRIPE_SECRET_KEY=sk_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      - DEBUG=true
+      - FLASK_DEBUG=1
+    volumes:
+      # VULNERABILITY: Mounting host filesystem
+      - ./:/app
+      - /etc/passwd:/etc/passwd:ro  # Dangerous mount for LFI testing
+    # VULNERABILITY: Running in privileged mode
+    privileged: true
+    # VULNERABILITY: No resource limits
+    # No memory/CPU limits set
+    networks:
+      - vulnerable-network
+    restart: unless-stopped
+
+  # Optional: Add a database service for more realistic scenarios
+  # Uncomment if you want to test with a real database
+  # 
+  # db:
+  #   image: mysql:5.7
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: root123
+  #     MYSQL_DATABASE: vulnerable
+  #     MYSQL_USER: admin
+  #     MYSQL_PASSWORD: admin123
+  #   ports:
+  #     - "3306:3306"
+
+networks:
+  vulnerable-network:
+    driver: bridge

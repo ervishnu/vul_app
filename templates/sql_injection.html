@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}SQL Injection - Vulnerable App{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>💉 SQL Injection</h2>
+    <span class="vulnerability-tag">HIGH</span>
+    <span class="vulnerability-tag">CWE-89</span>
+    
+    <p>Search for users in the database. This form is vulnerable to SQL injection.</p>
+    
+    <form method="POST" style="margin-top: 1rem;">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter username to search">
+        <button type="submit">Search</button>
+    </form>
+    
+    <div class="hint">
+        <strong>💡 Try these payloads:</strong>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+            <li><code>' OR '1'='1</code> - Bypass authentication</li>
+            <li><code>' OR '1'='1' --</code> - Comment out rest of query</li>
+            <li><code>' UNION SELECT * FROM users --</code> - Union-based injection</li>
+            <li><code>admin'--</code> - Login as admin</li>
+        </ul>
+    </div>
+    
+    {% if error %}
+    <div class="error">
+        <strong>Error:</strong> {{ error }}
+    </div>
+    {% endif %}
+    
+    {% if results %}
+    <div class="result">
+        <h3>Results:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Credit Card</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in results %}
+                <tr>
+                    {% for cell in row %}
+                    <td>{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

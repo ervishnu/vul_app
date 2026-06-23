@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Command Injection - Vulnerable App{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>⚡ Command Injection</h2>
+    <span class="vulnerability-tag">CRITICAL</span>
+    <span class="vulnerability-tag">CWE-78</span>
+    
+    <p>Ping a hostname to check if it's reachable. This form is vulnerable to command injection.</p>
+    
+    <form method="POST" style="margin-top: 1rem;">
+        <label for="hostname">Hostname:</label>
+        <input type="text" id="hostname" name="hostname" placeholder="e.g., google.com">
+        <button type="submit">Ping</button>
+    </form>
+    
+    <div class="hint">
+        <strong>💡 Try these payloads:</strong>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+            <li><code>google.com; ls -la</code> - List files</li>
+            <li><code>google.com; cat /etc/passwd</code> - Read passwd file</li>
+            <li><code>google.com | whoami</code> - Get current user</li>
+            <li><code>; id</code> - Get user ID info</li>
+            <li><code>google.com && uname -a</code> - System info</li>
+            <li><code>`whoami`</code> - Command substitution</li>
+        </ul>
+    </div>
+    
+    {% if output %}
+    <div class="result">
+        <h3>Output:</h3>
+        <pre>{{ output }}</pre>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

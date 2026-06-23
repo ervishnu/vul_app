@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Local File Inclusion - Vulnerable App{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>📂 Local File Inclusion (LFI)</h2>
+    <span class="vulnerability-tag">HIGH</span>
+    <span class="vulnerability-tag">CWE-22</span>
+    
+    <p>Read files from the server's filesystem through path traversal.</p>
+    
+    <form method="GET" style="margin-top: 1rem;">
+        <label for="file">File Path:</label>
+        <input type="text" id="file" name="file" placeholder="/etc/passwd" value="{{ request.args.get('file', '') }}">
+        <button type="submit">Read File</button>
+    </form>
+    
+    <div class="hint">
+        <strong>💡 Try these paths:</strong>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+            <li><code>/etc/passwd</code> - User accounts</li>
+            <li><code>/etc/shadow</code> - Password hashes (if permissions allow)</li>
+            <li><code>../../../etc/passwd</code> - Path traversal</li>
+            <li><code>....//....//....//etc/passwd</code> - Bypass filters</li>
+            <li><code>/proc/self/environ</code> - Environment variables</li>
+            <li><code>/var/log/apache2/access.log</code> - Apache logs</li>
+            <li><code>app.py</code> - Application source code</li>
+        </ul>
+    </div>
+    
+    {% if content %}
+    <div class="result">
+        <h3>File Content:</h3>
+        <pre>{{ content }}</pre>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

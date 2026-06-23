@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Vulnerable App{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>🔓 Vulnerable Web Application</h2>
+    <p>This application is designed for security testing and learning. It contains intentional vulnerabilities for SAST and DAST testing.</p>
+</div>
+
+<h2 style="margin-bottom: 1rem; color: #e94560;">Available Vulnerabilities</h2>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1rem;">
+    
+    <div class="card">
+        <h3>💉 SQL Injection</h3>
+        <span class="vulnerability-tag">HIGH</span>
+        <span class="vulnerability-tag">OWASP A03</span>
+        <p>Test SQL injection attacks on login and search forms.</p>
+        <br>
+        <a href="/sql-injection" class="btn">Test SQL Injection</a>
+    </div>
+    
+    <div class="card">
+        <h3>📜 Cross-Site Scripting (XSS)</h3>
+        <span class="vulnerability-tag">HIGH</span>
+        <span class="vulnerability-tag">OWASP A03</span>
+        <p>Test reflected and stored XSS vulnerabilities.</p>
+        <br>
+        <a href="/xss" class="btn">Test XSS</a>
+    </div>
+    
+    <div class="card">
+        <h3>⚡ Command Injection</h3>
+        <span class="vulnerability-tag">CRITICAL</span>
+        <span class="vulnerability-tag">OWASP A03</span>
+        <p>Execute arbitrary system commands through the application.</p>
+        <br>
+        <a href="/command-injection" class="btn">Test Command Injection</a>
+    </div>
+    
+    <div class="card">
+        <h3>🔥 Remote Code Execution</h3>
+        <span class="vulnerability-tag">CRITICAL</span>
+        <span class="vulnerability-tag">OWASP A03</span>
+        <p>Execute arbitrary Python code on the server.</p>
+        <br>
+        <a href="/rce" class="btn">Test RCE</a>
+    </div>
+    
+    <div class="card">
+        <h3>📁 Remote File Inclusion</h3>
+        <span class="vulnerability-tag">HIGH</span>
+        <span class="vulnerability-tag">OWASP A03</span>
+        <p>Include remote files from external sources.</p>
+        <br>
+        <a href="/rfi" class="btn">Test RFI</a>
+    </div>
+    
+    <div class="card">
+        <h3>📂 Local File Inclusion</h3>
+        <span class="vulnerability-tag">HIGH</span>
+        <span class="vulnerability-tag">OWASP A01</span>
+        <p>Read arbitrary files from the server.</p>
+        <br>
+        <a href="/lfi?file=/etc/passwd" class="btn">Test LFI</a>
+    </div>
+    
+    <div class="card">
+        <h3>🔄 CSRF Attack</h3>
+        <span class="vulnerability-tag">MEDIUM</span>
+        <span class="vulnerability-tag">OWASP A01</span>
+        <p>Test Cross-Site Request Forgery vulnerabilities.</p>
+        <br>
+        <a href="/csrf" class="btn">Test CSRF</a>
+    </div>
+    
+    <div class="card">
+        <h3>🎨 CSS Injection</h3>
+        <span class="vulnerability-tag">MEDIUM</span>
+        <span class="vulnerability-tag">OWASP A03</span>
+        <p>Inject malicious CSS styles into pages.</p>
+        <br>
+        <a href="/css-injection" class="btn">Test CSS Injection</a>
+    </div>
+    
+    <div class="card">
+        <h3>🔐 Insecure Authentication</h3>
+        <span class="vulnerability-tag">HIGH</span>
+        <span class="vulnerability-tag">OWASP A07</span>
+        <p>Test authentication bypass and session attacks.</p>
+        <br>
+        <a href="/login" class="btn">Test Login</a>
+    </div>
+    
+    <div class="card">
+        <h3>👤 IDOR</h3>
+        <span class="vulnerability-tag">HIGH</span>
+        <span class="vulnerability-tag">OWASP A01</span>
+        <p>Access other users' data through direct object references.</p>
+        <br>
+        <a href="/user/1" class="btn">Test IDOR</a>
+    </div>
+    
+    <div class="card">
+        <h3>📄 XXE Injection</h3>
+        <span class="vulnerability-tag">HIGH</span>
+        <span class="vulnerability-tag">OWASP A05</span>
+        <p>Test XML External Entity injection.</p>
+        <br>
+        <a href="/xxe" class="btn">Test XXE</a>
+    </div>
+    
+    <div class="card">
+        <h3>📝 SSTI</h3>
+        <span class="vulnerability-tag">CRITICAL</span>
+        <span class="vulnerability-tag">OWASP A03</span>
+        <p>Server-Side Template Injection vulnerability.</p>
+        <br>
+        <a href="/ssti" class="btn">Test SSTI</a>
+    </div>
+    
+    <div class="card">
+        <h3>↪️ Open Redirect</h3>
+        <span class="vulnerability-tag">MEDIUM</span>
+        <span class="vulnerability-tag">OWASP A01</span>
+        <p>Redirect users to malicious external sites.</p>
+        <br>
+        <a href="/redirect?url=https://evil.com" class="btn">Test Open Redirect</a>
+    </div>
+    
+    <div class="card">
+        <h3>📤 Insecure File Upload</h3>
+        <span class="vulnerability-tag">HIGH</span>
+        <span class="vulnerability-tag">OWASP A04</span>
+        <p>Upload arbitrary files including web shells.</p>
+        <br>
+        <a href="/upload" class="btn">Test File Upload</a>
+    </div>
+    
+    <div class="card">
+        <h3>🔑 Weak Cryptography</h3>
+        <span class="vulnerability-tag">MEDIUM</span>
+        <span class="vulnerability-tag">OWASP A02</span>
+        <p>Test weak hashing and encoding functions.</p>
+        <br>
+        <a href="/crypto" class="btn">Test Crypto</a>
+    </div>
+    
+    <div class="card">
+        <h3>📋 Mass Assignment</h3>
+        <span class="vulnerability-tag">MEDIUM</span>
+        <span class="vulnerability-tag">OWASP A01</span>
+        <p>Modify protected fields through mass assignment.</p>
+        <br>
+        <a href="/register" class="btn">Test Registration</a>
+    </div>
+    
+    <div class="card">
+        <h3>🐛 Debug/Info Disclosure</h3>
+        <span class="vulnerability-tag">MEDIUM</span>
+        <span class="vulnerability-tag">OWASP A05</span>
+        <p>Access sensitive debug information and credentials.</p>
+        <br>
+        <a href="/debug" class="btn">View Debug Info</a>
+    </div>
+    
+    <div class="card">
+        <h3>👑 Broken Access Control</h3>
+        <span class="vulnerability-tag">CRITICAL</span>
+        <span class="vulnerability-tag">OWASP A01</span>
+        <p>Access admin functionality without authorization.</p>
+        <br>
+        <a href="/admin" class="btn">Access Admin</a>
+    </div>
+    
+</div>
+
+<div class="card" style="margin-top: 2rem;">
+    <h2>🔍 Hardcoded Secrets (SAST Detection)</h2>
+    <p>This application contains hardcoded secrets that should be detected by SAST tools:</p>
+    <ul style="margin-top: 1rem; margin-left: 2rem;">
+        <li>AWS Access Key: AKIAIOSFODNN7EXAMPLE</li>
+        <li>AWS Secret Key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY</li>
+        <li>GitHub Token: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</li>
+        <li>Stripe API Key: sk_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxx</li>
+        <li>Database Password: admin123</li>
+        <li>Admin Password: password123</li>
+        <li>Flask Secret Key: super_secret_key_123</li>
+    </ul>
+</div>
+{% endblock %}

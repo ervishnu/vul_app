@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Remote File Inclusion - Vulnerable App{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>📁 Remote File Inclusion (RFI)</h2>
+    <span class="vulnerability-tag">HIGH</span>
+    <span class="vulnerability-tag">CWE-98</span>
+    
+    <p>Include content from remote URLs. This can be used to include malicious scripts.</p>
+    
+    <form method="POST" style="margin-top: 1rem;">
+        <label for="file">Remote File URL:</label>
+        <input type="text" id="file" name="file" placeholder="https://example.com/file.txt">
+        <button type="submit">Load File</button>
+    </form>
+    
+    <div class="hint">
+        <strong>💡 Try these:</strong>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+            <li><code>https://httpbin.org/get</code> - Fetch external content</li>
+            <li><code>http://localhost:5000/debug</code> - SSRF to internal endpoints</li>
+            <li><code>file:///etc/passwd</code> - Local file access (may not work)</li>
+            <li><code>http://169.254.169.254/latest/meta-data/</code> - AWS metadata (if on AWS)</li>
+        </ul>
+    </div>
+    
+    {% if content %}
+    <div class="result">
+        <h3>File Content:</h3>
+        <pre>{{ content }}</pre>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

