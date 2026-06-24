@@ -1,6 +1,6 @@
 # 🔓 Vulnerable Web Application for Security Testing
 
-> ⚠️ **WARNING**: This application contains **intentional security vulnerabilities**. It is designed for educational purposes, security training, and testing SAST/DAST tools. **DO NOT deploy in production or expose to the internet!**
+> ⚠️ **WARNING**: This application contains **intentional security vulnerabilities**. It is designed for educational purposes, security training, and testing SAST/DAST tools. **DO NOT deploy in production or expose to the internet!!**
 
 ## 📋 Overview
 
